@@ -1,0 +1,20 @@
+#!/bin/bash
+#SBATCH -A uot143
+#SBATCH --job-name="example.local"
+#SBATCH --output="example.local.out"
+#SBATCH --partition=debug
+#SBATCH --nodes=1
+#SBATCH --ntasks-per-node=4
+#SBATCH --export=ALL 
+#SBATCH --time=10
+
+module load openjdk
+SW=/expanse/lustre/projects/uot143/fegaras
+export HADOOP_HOME=$SW/hadoop-3.2.2
+PATH="$HADOOP_HOME/bin:$PATH"
+
+rm -rf output-simple output-join
+echo "Evaluating Simple.java:"
+hadoop --config $HOME jar example.jar Simple simple.txt output-simple
+echo "Evaluating Join.java:"
+hadoop --config $HOME jar example.jar Join e.txt d.txt output-join
