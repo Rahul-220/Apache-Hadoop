@@ -1,0 +1,35 @@
+#!/bin/bash
+#SBATCH -A uot143
+#SBATCH --job-name="add"
+#SBATCH --output="add.distr.out"
+#SBATCH --partition=compute
+#SBATCH --nodes=1
+#SBATCH --ntasks-per-node=120
+#SBATCH --mem=249325M
+#SBATCH --export=ALL 
+#SBATCH --time=29
+
+export HADOOP_CONF_DIR=/home/$USER/expansecluster
+module load openjdk
+SW=/expanse/lustre/projects/uot143/fegaras
+export HADOOP_HOME=$SW/hadoop-3.2.2
+export MYHADOOP_HOME=$SW/myhadoop
+PATH="$HADOOP_HOME/bin:$HADOOP_HOME/sbin:$MYHADOOP_HOME/bin:$PATH"
+
+myhadoop-configure.sh -s /scratch/$USER/job_$SLURM_JOBID
+
+start-dfs.sh
+start-yarn.sh
+
+hdfs dfs -mkdir -p /user/$USER
+hdfs dfs -put $SW/M-matrix-large.txt /user/$USER/M-matrix-large.txt
+hdfs dfs -put $SW/N-matrix-large.txt /user/$USER/N-matrix-large.txt
+hadoop jar add.jar Add /user/$USER/M-matrix-large.txt /user/$USER/N-matrix-large.txt /user/$USER/temp /user/$USER/output
+
+rm -rf output-distr
+mkdir output-distr
+hdfs dfs -get /user/$USER/output/part* output-distr
+
+stop-yarn.sh
+stop-dfs.sh
+myhadoop-cleanup.sh

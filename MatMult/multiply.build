@@ -1,0 +1,14 @@
+#!/bin/bash
+
+rm -rf add.jar classes
+
+module load openjdk
+SW=/expanse/lustre/projects/uot143/fegaras
+export HADOOP_HOME=$SW/hadoop-3.2.2
+PATH="$HADOOP_HOME/bin:$PATH"
+
+mkdir -p classes
+javac -d classes -cp classes:`$HADOOP_HOME/bin/hadoop classpath` src/main/java/Add.java
+jar cf add.jar -C classes .
+
+echo "Compilation completed."

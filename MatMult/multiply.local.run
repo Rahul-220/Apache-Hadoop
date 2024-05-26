@@ -1,0 +1,18 @@
+#!/bin/bash
+#SBATCH -A uot143
+#SBATCH --job-name="add.local"
+#SBATCH --output="add.local.out"
+#SBATCH --partition=compute
+#SBATCH --nodes=1
+#SBATCH --ntasks-per-node=4
+#SBATCH --export=ALL 
+#SBATCH --time=10
+
+module load openjdk
+SW=/expanse/lustre/projects/uot143/fegaras
+export HADOOP_HOME=$SW/hadoop-3.2.2
+PATH="$HADOOP_HOME/bin:$PATH"
+export TMPDIR=$HOME/tmp
+
+rm -rf temp output
+hadoop --config $SW/conf jar add.jar Add M-matrix-small.txt N-matrix-small.txt temp output
