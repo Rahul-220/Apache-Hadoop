@@ -1,0 +1,8 @@
+Description:
+        The Purpose of this project is to develop a MapReduce Program on Hadoop to multiply two sparse matrices.
+
+Project Description:
+        For this project, you are asked to implement matrix multiplication in Map-Reduce. You should modify Multiply.java only. In your Java main Program, args[0] is the first
+input matrix M, args[1] is the second input matrix N, args[2] is the directory name to pass the intemediate results from the first Map-Reduce job to the second, and args[3] is
+the output directory. All the input and output file formats must be text formats. There are two small sparse matrices in the files M-matrix-small.txt and N-matrix-small.txt
+for testing in standalone mode. Their matrix multiplication must return the result matrix in solution-small.txt
