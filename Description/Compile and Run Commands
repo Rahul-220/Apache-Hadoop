@@ -1,0 +1,7 @@
+cd HadoopMatMult
+mvn install
+rm -rf intermediate output
+~/hadoop-3.3.2/bin/hadoop jar target/*.jar Multiply M-matrix-small.txt N-matrix-small.txt intermediate ouptut
+
+
+The file output/part-r-00000 contains the results which must be the same as in solution-small.txt
